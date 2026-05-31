@@ -1,0 +1,22 @@
+:root {
+}
+
+.header {
+    font-size: 200px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/Fonts/ByteBounce.asset?fileID=11400000&guid=52ff1e36bacbe47448d2be1929ad955d&type=2#ByteBounce");
+}
+
+.button {
+    font-size: 64px;
+    width: 300px;
+    height: 100px;
+    align-self: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-top: 50px;
+    background-image: url("project://database/Assets/Sprites/DEVNIK%202D/2D%20UI%20PIXEL%20BUTTONS/UI%20SIMPLE%20PIXEL%20UNSPLIT.png?fileID=-1397424353&guid=a37e8466236089c45b610370218b5353&type=3#BAR1");
+    -unity-font-definition: url("project://database/Assets/Fonts/ByteBounce.asset?fileID=11400000&guid=52ff1e36bacbe47448d2be1929ad955d&type=2#ByteBounce");
+}
