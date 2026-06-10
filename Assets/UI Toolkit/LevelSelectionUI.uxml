@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=9375a12514aff8542b816042e0b7270f&amp;type=3#MainMenuStyle"/>
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:Label text="Level Selection" name="Header" class="header" style="align-self: center;"/>
+        <ui:Button text="Level 1&#10;Best Time: 00:00&#10;Best Score: 1 Star" name="Level1Button" class="button" style="margin-top: 130px; font-size: 36px;"/>
+        <ui:Button text="Level 2&#10;Best Time: 00:00&#10;Best Score: 1 Star" name="Level2Button" class="button" style="font-size: 36px;"/>
+        <ui:Button text="Level 3&#10;Best Time: 00:00&#10;Best Score: 1 Star" name="Level3Button" class="button" style="font-size: 36px;"/>
+        <ui:Button text="Main Menu" name="MainMenuButton" class="button" style="margin-top: 130px;"/>
+    </ui:VisualElement>
+</ui:UXML>

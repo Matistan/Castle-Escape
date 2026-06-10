@@ -12,11 +12,88 @@
     width: 300px;
     height: 100px;
     align-self: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
     margin-top: 50px;
     background-image: url("project://database/Assets/Sprites/DEVNIK%202D/2D%20UI%20PIXEL%20BUTTONS/UI%20SIMPLE%20PIXEL%20UNSPLIT.png?fileID=-1397424353&guid=a37e8466236089c45b610370218b5353&type=3#BAR1");
     -unity-font-definition: url("project://database/Assets/Fonts/ByteBounce.asset?fileID=11400000&guid=52ff1e36bacbe47448d2be1929ad955d&type=2#ByteBounce");
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.slider {
+    -unity-font-definition: url("project://database/Assets/Fonts/ByteBounce.asset?fileID=11400000&guid=52ff1e36bacbe47448d2be1929ad955d&type=2#ByteBounce");
+    font-size: 64px;
+    margin-top: 100px;
+    margin-left: 0;
+    margin-right: 0;
+    width: 40%;
+    height: 76px;
+    background-image: url("project://database/Assets/Sprites/DEVNIK%202D/2D%20UI%20PIXEL%20BUTTONS/UI%20SIMPLE%20PIXEL%20UNSPLIT.png?fileID=-2127119051&guid=a37e8466236089c45b610370218b5353&type=3#BAR_OUTLINE");
+    margin-bottom: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    align-self: center;
+}
+
+.unity-slider-int .unity-base-slider__tracker {
+    background-image: none;
+    width: auto;
+    height: 15px;
+    background-color: rgba(255, 255, 255, 0);
+    flex-grow: 1;
+    top: 0;
+    position: relative;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.unity-slider-int .unity-base-slider__dragger {
+    background-image: url("project://database/Assets/Sprites/DEVNIK%202D/2D%20UI%20PIXEL%20BUTTONS/UI%20SIMPLE%20PIXEL%20UNSPLIT.png?fileID=1897795018&guid=a37e8466236089c45b610370218b5353&type=3#SCROLL");
+    width: 34px;
+    height: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    top: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.unity-slider-int .unity-base-slider__dragger-border {
+}
+
+.unity-base-slider__drag-container {
+    background-color: rgba(255, 255, 255, 0);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.unity-slider-int .unity-base-slider__label {
+    display: flex;
+    top: -60px;
+    overflow: visible;
+    visibility: visible;
+    position: absolute;
 }

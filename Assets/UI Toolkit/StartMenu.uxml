@@ -1,0 +1,14 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="LanSettingsUI" src="project://database/Assets/UI%20Toolkit/LanSettingsUI.uxml?fileID=9197481963319205126&amp;guid=43508a06ea2cb7b4db4ad94012412632&amp;type=3#LanSettingsUI"/>
+    <ui:Template name="LevelSelectionUI" src="project://database/Assets/UI%20Toolkit/LevelSelectionUI.uxml?fileID=9197481963319205126&amp;guid=37c65805d14cf3a448287dbe107807d1&amp;type=3#LevelSelectionUI"/>
+    <ui:Template name="MainMenuUI" src="project://database/Assets/UI%20Toolkit/MainMenuUI.uxml?fileID=9197481963319205126&amp;guid=07708e9b2d7901c4a8b428037420b8dd&amp;type=3#MainMenuUI"/>
+    <ui:Template name="MultiplayerUI" src="project://database/Assets/UI%20Toolkit/MultiplayerUI.uxml?fileID=9197481963319205126&amp;guid=1e1d964647969c74cb70efc95ede340b&amp;type=3#MultiplayerUI"/>
+    <ui:Template name="SettingsUI" src="project://database/Assets/UI%20Toolkit/SettingsUI.uxml?fileID=9197481963319205126&amp;guid=21c7443f291b7d14d935a665a4177a24&amp;type=3#SettingsUI"/>
+    <ui:Template name="StoryModeUI" src="project://database/Assets/UI%20Toolkit/StoryModeUI.uxml?fileID=9197481963319205126&amp;guid=ed140852b9946484abe204fa303fa3d3&amp;type=3#StoryModeUI"/>
+    <ui:Instance template="MainMenuUI" name="MainMenuUI" style="flex-grow: 1; display: flex;"/>
+    <ui:Instance template="SettingsUI" name="SettingsUI" style="flex-grow: 1; display: none;"/>
+    <ui:Instance template="StoryModeUI" name="StoryModeUI" style="display: none; flex-grow: 1;"/>
+    <ui:Instance template="LevelSelectionUI" name="LevelSelectionUI" style="display: none; flex-grow: 1;"/>
+    <ui:Instance template="MultiplayerUI" name="MultiplayerUI" style="display: none; flex-grow: 1;"/>
+    <ui:Instance template="LanSettingsUI" name="LanSettingsUI" style="display: none; flex-grow: 1;"/>
+</ui:UXML>

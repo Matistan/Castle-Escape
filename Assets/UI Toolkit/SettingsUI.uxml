@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=9375a12514aff8542b816042e0b7270f&amp;type=3#MainMenuStyle"/>
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:Label text="Settings" name="Header" class="header" style="align-self: center;"/>
+        <ui:SliderInt label="Master Volume" value="5" high-value="10" name="MasterVolumeSlider" fill="false" focusable="false" class="slider"/>
+        <ui:SliderInt label="Music" value="10" high-value="10" name="MusicVolumeSlider" enabled="true" focusable="false" class="slider"/>
+        <ui:SliderInt label="Sounds" value="10" high-value="10" name="SoundVolumeSlider" focusable="false" class="slider"/>
+        <ui:Button text="Go Back" name="GoBackButton" class="button"/>
+    </ui:VisualElement>
+</ui:UXML>
