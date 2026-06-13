@@ -137,7 +137,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 1.2, y: 0.6}
   m_EdgeRadius: 0
 --- !u!114 &5263181823888264608
 MonoBehaviour:
@@ -153,4 +153,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CastlePressurePlate
   defaultSprite: {fileID: 8590654338738829806, guid: 299b094783c9c13ab19a42a3f4433bcb, type: 3}
   pressedSprite: {fileID: -1747433703020124971, guid: 00d54dfee85f726a910421c25a3c7616, type: 3}
-  linkedObjects: []
+  trapLinks: []

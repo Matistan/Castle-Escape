@@ -6,12 +6,15 @@ public class CastleCarryableBox : MonoBehaviour
 {
     [SerializeField] private Vector2 carriedVelocity = Vector2.zero;
 
+    [SerializeField] private float stackSearchHalfWidth = 0.45f;
+
     private Rigidbody2D body;
     private Collider2D boxCollider;
     private Transform holder;
     private Vector3 localHoldOffset;
     private bool wasKinematic;
     private float originalGravityScale;
+    private float stackHeight;
 
     public bool IsHeld => holder != null;
 
@@ -21,6 +24,7 @@ public class CastleCarryableBox : MonoBehaviour
         boxCollider = GetComponent<Collider2D>();
         wasKinematic = body.bodyType == RigidbodyType2D.Kinematic;
         originalGravityScale = body.gravityScale;
+        stackHeight = boxCollider.bounds.size.y;
     }
 
     private void LateUpdate()
@@ -63,11 +67,41 @@ public class CastleCarryableBox : MonoBehaviour
         }
 
         holder = null;
-        transform.position = worldPosition;
+        transform.position = ResolveStackedPosition(worldPosition);
         boxCollider.enabled = true;
         body.bodyType = wasKinematic ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
         body.gravityScale = originalGravityScale;
         body.linearVelocity = Vector2.zero;
         body.angularVelocity = 0f;
+    }
+
+    private Vector3 ResolveStackedPosition(Vector3 worldPosition)
+    {
+        Vector2 probeCenter = worldPosition + Vector3.down * (stackHeight * 0.5f);
+        Vector2 probeSize = new Vector2(stackSearchHalfWidth * 2f, stackHeight);
+        Collider2D[] overlaps = Physics2D.OverlapBoxAll(probeCenter, probeSize, 0f);
+
+        float highestSupportTop = float.MinValue;
+        for (int i = 0; i < overlaps.Length; i++)
+        {
+            CastleCarryableBox otherBox = overlaps[i].GetComponentInParent<CastleCarryableBox>();
+            if (otherBox == null || otherBox == this || otherBox.IsHeld)
+            {
+                continue;
+            }
+
+            float top = overlaps[i].bounds.max.y;
+            if (top > highestSupportTop && top <= worldPosition.y + 0.05f)
+            {
+                highestSupportTop = top;
+            }
+        }
+
+        if (highestSupportTop > float.MinValue)
+        {
+            worldPosition.y = highestSupportTop + (stackHeight * 0.5f);
+        }
+
+        return worldPosition;
     }
 }

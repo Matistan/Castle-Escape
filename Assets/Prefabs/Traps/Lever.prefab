@@ -137,7 +137,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &5108664304864938707
 MonoBehaviour:
@@ -156,4 +156,5 @@ MonoBehaviour:
   middleSprite: {fileID: -8982504431011623917, guid: 4c9a11e3b2a7175be6404ccee476c09e, type: 3}
   onSprite: {fileID: -5373174546207323876, guid: 57c9bf5b7e69489defa38098987ec31b, type: 3}
   frameTime: 0.06
-  linkedObjects: []
+  interactRadius: 1.25
+  trapLinks: []

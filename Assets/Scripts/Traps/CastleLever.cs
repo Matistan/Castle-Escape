@@ -10,7 +10,8 @@ public class CastleLever : MonoBehaviour
     [SerializeField] private Sprite middleSprite;
     [SerializeField] private Sprite onSprite;
     [SerializeField] private float frameTime = 0.06f;
-    [SerializeField] private GameObject[] linkedObjects;
+    [SerializeField] private float interactRadius = 1.25f;
+    [SerializeField] private CastleTrapLink[] trapLinks;
 
     private Collider2D leverCollider;
     private SpriteRenderer spriteRenderer;
@@ -18,13 +19,48 @@ public class CastleLever : MonoBehaviour
     private bool isOn;
 
     public bool IsOn => isOn;
+    public float InteractRadius => interactRadius;
 
     private void Awake()
     {
         leverCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         leverCollider.isTrigger = true;
+
+        if (leverCollider is BoxCollider2D boxCollider)
+        {
+            CastleSpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
+        }
+
         SetStateImmediate(startOn);
+    }
+
+    public static bool TryFindNearestInRange(Vector3 position, float radius, out CastleLever nearestLever)
+    {
+        CastleLever[] levers = FindObjectsByType<CastleLever>(FindObjectsSortMode.None);
+        nearestLever = null;
+        float nearestDistance = float.MaxValue;
+
+        for (int i = 0; i < levers.Length; i++)
+        {
+            float distance = Vector2.Distance(position, levers[i].transform.position);
+            float allowedRadius = Mathf.Max(radius, levers[i].interactRadius);
+            if (distance > allowedRadius || distance >= nearestDistance)
+            {
+                continue;
+            }
+
+            nearestDistance = distance;
+            nearestLever = levers[i];
+        }
+
+        return nearestLever != null;
+    }
+
+    public void ApplyLinks(params CastleTrapLink[] links)
+    {
+        trapLinks = links;
+        ApplyLinkedObjects();
     }
 
     public void Toggle()
@@ -42,13 +78,13 @@ public class CastleLever : MonoBehaviour
         animationRoutine = StartCoroutine(AnimateState(active));
     }
 
-    private IEnumerator AnimateState(bool active)
+    private IEnumerator AnimateState(bool targetOn)
     {
-        isOn = active;
-        spriteRenderer.sprite = isOn ? offSprite : onSprite;
+        spriteRenderer.sprite = isOn ? onSprite : offSprite;
         yield return new WaitForSeconds(frameTime);
         spriteRenderer.sprite = middleSprite;
         yield return new WaitForSeconds(frameTime);
+        isOn = targetOn;
         spriteRenderer.sprite = isOn ? onSprite : offSprite;
         animationRoutine = null;
 
@@ -64,17 +100,35 @@ public class CastleLever : MonoBehaviour
 
     private void ApplyLinkedObjects()
     {
-        if (linkedObjects == null)
+        if (trapLinks == null)
         {
             return;
         }
 
-        for (int i = 0; i < linkedObjects.Length; i++)
+        for (int i = 0; i < trapLinks.Length; i++)
         {
-            if (linkedObjects[i] != null)
-            {
-                linkedObjects[i].SetActive(isOn);
-            }
+            ApplyLink(trapLinks[i], isOn);
+        }
+    }
+
+    private static void ApplyLink(CastleTrapLink link, bool sourceActive)
+    {
+        if (link.target == null)
+        {
+            return;
+        }
+
+        bool targetActive = link.invertActiveState ? !sourceActive : sourceActive;
+        link.target.SetActive(targetActive);
+        ApplyLinkedComponentStates(link.target, targetActive);
+    }
+
+    private static void ApplyLinkedComponentStates(GameObject linkedObject, bool targetActive)
+    {
+        CastleSpikeTrap spikeTrap = linkedObject.GetComponent<CastleSpikeTrap>();
+        if (spikeTrap != null)
+        {
+            spikeTrap.SetArmed(targetActive);
         }
     }
 }

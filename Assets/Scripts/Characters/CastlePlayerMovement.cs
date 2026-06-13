@@ -10,6 +10,8 @@ public class CastlePlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float jumpBufferTime = 0.12f;
+    [SerializeField] private float carryMoveSpeedMultiplier = 0.75f;
+    [SerializeField] private float carryJumpForceMultiplier = 0.85f;
     [SerializeField] private float pickupRadius = 0.9f;
     [SerializeField] private Vector2 carryOffset = new Vector2(0.55f, 0.55f);
     [SerializeField] private Vector2 placeOffset = new Vector2(0.9f, -0.35f);
@@ -84,13 +86,16 @@ public class CastlePlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        float effectiveMoveSpeed = heldBox != null ? moveSpeed * carryMoveSpeedMultiplier : moveSpeed;
+        float effectiveJumpForce = heldBox != null ? jumpForce * carryJumpForceMultiplier : jumpForce;
+
         Vector2 velocity = body.linearVelocity;
-        velocity.x = input.Move.x * moveSpeed;
+        velocity.x = input.Move.x * effectiveMoveSpeed;
 
         bool grounded = IsGrounded();
         if (jumpBufferTimer > 0f && grounded)
         {
-            velocity.y = jumpForce;
+            velocity.y = effectiveJumpForce;
             jumpBufferTimer = 0f;
             grounded = false;
         }
@@ -138,27 +143,7 @@ public class CastlePlayerMovement : MonoBehaviour
 
     private bool TryInteractWithLever()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, pickupRadius);
-        CastleLever nearestLever = null;
-        float nearestDistance = float.MaxValue;
-
-        for (int i = 0; i < hits.Length; i++)
-        {
-            CastleLever lever = hits[i].GetComponentInParent<CastleLever>();
-            if (lever == null)
-            {
-                continue;
-            }
-
-            float distance = Vector2.Distance(transform.position, lever.transform.position);
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;
-                nearestLever = lever;
-            }
-        }
-
-        if (nearestLever == null)
+        if (!CastleLever.TryFindNearestInRange(transform.position, pickupRadius, out CastleLever nearestLever))
         {
             return false;
         }
