@@ -1,29 +1,83 @@
 :root {
 }
 
+.menu-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("project://database/Assets/Sprites/Generated/MainMenuBackground.png?fileID=21300000&guid=f1a2b3c4d5e6789012345678abcdef90&type=3#MainMenuBackground");
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.menu-screen {
+    flex-grow: 1;
+    position: relative;
+}
+
 .header {
     font-size: 200px;
     color: rgb(255, 255, 255);
     -unity-font-definition: url("project://database/Assets/Fonts/ByteBounce.asset?fileID=11400000&guid=52ff1e36bacbe47448d2be1929ad955d&type=2#ByteBounce");
 }
 
-.button {
-    font-size: 64px;
-    width: 300px;
-    height: 100px;
+.title-logo {
+    width: 960px;
+    height: 420px;
     align-self: center;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    margin-top: 50px;
-    background-image: url("project://database/Assets/Sprites/DEVNIK%202D/2D%20UI%20PIXEL%20BUTTONS/UI%20SIMPLE%20PIXEL%20UNSPLIT.png?fileID=-1397424353&guid=a37e8466236089c45b610370218b5353&type=3#BAR1");
+    margin-top: 16px;
+    margin-bottom: 4px;
+    background-image: url("project://database/Assets/Sprites/Generated/CastleEscapeTitle.png?fileID=21300000&guid=6db919cced5184a39a2b4a7cb2951bf0&type=3#CastleEscapeTitle");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.button {
+    font-size: 52px;
+    width: 340px;
+    height: 84px;
+    align-self: center;
+    margin-top: 28px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: rgb(46, 42, 63);
+    background-image: none;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 5px;
+    border-left-width: 3px;
+    border-top-color: rgb(110, 100, 130);
+    border-right-color: rgb(110, 100, 130);
+    border-bottom-color: rgb(24, 20, 36);
+    border-left-color: rgb(110, 100, 130);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    color: rgb(235, 210, 160);
     -unity-font-definition: url("project://database/Assets/Fonts/ByteBounce.asset?fileID=11400000&guid=52ff1e36bacbe47448d2be1929ad955d&type=2#ByteBounce");
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-    border-left-width: 0;
-    background-color: rgba(0, 0, 0, 0);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    transition-duration: 0.12s;
+    transition-property: background-color, border-color, color;
+}
+
+.button:hover {
+    background-color: rgb(68, 54, 92);
+    border-top-color: rgb(210, 150, 70);
+    border-right-color: rgb(210, 150, 70);
+    border-bottom-color: rgb(140, 90, 40);
+    border-left-color: rgb(210, 150, 70);
+    color: rgb(255, 225, 140);
+}
+
+.button:active {
+    background-color: rgb(32, 28, 48);
+    border-top-color: rgb(90, 70, 50);
+    border-right-color: rgb(90, 70, 50);
+    border-bottom-color: rgb(18, 14, 28);
+    border-left-color: rgb(90, 70, 50);
+    color: rgb(200, 170, 120);
 }
 
 .slider {

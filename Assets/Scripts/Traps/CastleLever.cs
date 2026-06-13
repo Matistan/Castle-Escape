@@ -11,7 +11,12 @@ public class CastleLever : MonoBehaviour
     [SerializeField] private Sprite onSprite;
     [SerializeField] private float frameTime = 0.06f;
     [SerializeField] private float interactRadius = 1.25f;
-    [SerializeField] private CastleTrapLink[] trapLinks;
+    [Header("Controlled Objects")]
+    [SerializeField] private GameObject[] controlledObjects;
+    [SerializeField] private bool hideControlledWhenActive = true;
+    [Header("Audio")]
+    [SerializeField] private AudioClip activateClip;
+    [SerializeField, Range(0f, 1f)] private float activateVolume = 0.8f;
 
     private Collider2D leverCollider;
     private SpriteRenderer spriteRenderer;
@@ -57,12 +62,6 @@ public class CastleLever : MonoBehaviour
         return nearestLever != null;
     }
 
-    public void ApplyLinks(params CastleTrapLink[] links)
-    {
-        trapLinks = links;
-        ApplyLinkedObjects();
-    }
-
     public void Toggle()
     {
         SetState(!isOn);
@@ -88,47 +87,39 @@ public class CastleLever : MonoBehaviour
         spriteRenderer.sprite = isOn ? onSprite : offSprite;
         animationRoutine = null;
 
-        ApplyLinkedObjects();
+        ApplyControlledObjects();
+        PlayActivateSound();
     }
 
     private void SetStateImmediate(bool active)
     {
         isOn = active;
         spriteRenderer.sprite = isOn ? onSprite : offSprite;
-        ApplyLinkedObjects();
+        ApplyControlledObjects();
     }
 
-    private void ApplyLinkedObjects()
+    private void ApplyControlledObjects()
     {
-        if (trapLinks == null)
+        if (controlledObjects == null)
         {
             return;
         }
 
-        for (int i = 0; i < trapLinks.Length; i++)
+        bool visible = hideControlledWhenActive ? !isOn : isOn;
+        for (int i = 0; i < controlledObjects.Length; i++)
         {
-            ApplyLink(trapLinks[i], isOn);
+            if (controlledObjects[i] != null)
+            {
+                controlledObjects[i].SetActive(visible);
+            }
         }
     }
 
-    private static void ApplyLink(CastleTrapLink link, bool sourceActive)
+    private void PlayActivateSound()
     {
-        if (link.target == null)
+        if (activateClip != null)
         {
-            return;
-        }
-
-        bool targetActive = link.invertActiveState ? !sourceActive : sourceActive;
-        link.target.SetActive(targetActive);
-        ApplyLinkedComponentStates(link.target, targetActive);
-    }
-
-    private static void ApplyLinkedComponentStates(GameObject linkedObject, bool targetActive)
-    {
-        CastleSpikeTrap spikeTrap = linkedObject.GetComponent<CastleSpikeTrap>();
-        if (spikeTrap != null)
-        {
-            spikeTrap.SetArmed(targetActive);
+            SettingsManager.PlaySfx(activateClip, transform.position, activateVolume);
         }
     }
 }

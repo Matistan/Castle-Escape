@@ -157,4 +157,7 @@ MonoBehaviour:
   onSprite: {fileID: -5373174546207323876, guid: 57c9bf5b7e69489defa38098987ec31b, type: 3}
   frameTime: 0.06
   interactRadius: 1.25
-  trapLinks: []
+  controlledObjects: []
+  hideControlledWhenActive: 1
+  activateClip: {fileID: 8300000, guid: a1f132dbe2d5c4679b04c51f97fbf8b9, type: 3}
+  activateVolume: 0.8

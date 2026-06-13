@@ -7,8 +7,10 @@ public class CastleCarryableBox : MonoBehaviour
     [SerializeField] private Vector2 carriedVelocity = Vector2.zero;
 
     [SerializeField] private float stackSearchHalfWidth = 0.45f;
+    [SerializeField] private float heldScaleMultiplier = 0.75f;
 
     private Rigidbody2D body;
+    private Vector3 originalScale;
     private Collider2D boxCollider;
     private Transform holder;
     private Vector3 localHoldOffset;
@@ -25,6 +27,7 @@ public class CastleCarryableBox : MonoBehaviour
         wasKinematic = body.bodyType == RigidbodyType2D.Kinematic;
         originalGravityScale = body.gravityScale;
         stackHeight = boxCollider.bounds.size.y;
+        originalScale = transform.localScale;
     }
 
     private void LateUpdate()
@@ -51,6 +54,7 @@ public class CastleCarryableBox : MonoBehaviour
         body.gravityScale = 0f;
         body.bodyType = RigidbodyType2D.Kinematic;
         boxCollider.enabled = false;
+        transform.localScale = originalScale * heldScaleMultiplier;
         transform.position = holder.TransformPoint(localHoldOffset);
     }
 
@@ -67,6 +71,7 @@ public class CastleCarryableBox : MonoBehaviour
         }
 
         holder = null;
+        transform.localScale = originalScale;
         transform.position = ResolveStackedPosition(worldPosition);
         boxCollider.enabled = true;
         body.bodyType = wasKinematic ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;

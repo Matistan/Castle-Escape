@@ -34,6 +34,6 @@ public class CastlePlayerAudio : MonoBehaviour
         }
 
         playedForCurrentAirborneState = true;
-        AudioSource.PlayClipAtPoint(jumpClip, transform.position, jumpVolume);
+        SettingsManager.PlaySfx(jumpClip, transform.position, jumpVolume);
     }
 }

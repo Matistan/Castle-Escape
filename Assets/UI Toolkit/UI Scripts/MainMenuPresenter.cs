@@ -8,10 +8,10 @@ public class MainMenuPresenter
     public Action OpenLevelSelection { set => freeModeButton.clicked += value; }
     public Action OpenStoryMode { set => storyModeButton.clicked += value; }
 
-    private Button storyModeButton;
-    private Button freeModeButton;
-    private Button settingsButton;
-    private Button quitButton;
+    private readonly Button storyModeButton;
+    private readonly Button freeModeButton;
+    private readonly Button settingsButton;
+    private readonly Button quitButton;
 
     public MainMenuPresenter(VisualElement root)
     {
@@ -20,11 +20,7 @@ public class MainMenuPresenter
         settingsButton = root.Q<Button>("SettingsButton");
         quitButton = root.Q<Button>("QuitButton");
 
-        quitButton.clicked += QuitGame;
-    }
-
-    private void QuitGame()
-    {
-        Application.Quit();
+        freeModeButton.SetEnabled(CastleSaveManager.IsFreeModeUnlocked);
+        quitButton.clicked += Application.Quit;
     }
 }

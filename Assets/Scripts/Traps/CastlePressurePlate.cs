@@ -7,7 +7,12 @@ public class CastlePressurePlate : MonoBehaviour
 {
     [SerializeField] private Sprite defaultSprite;
     [SerializeField] private Sprite pressedSprite;
-    [SerializeField] private CastleTrapLink[] trapLinks;
+    [Header("Controlled Objects")]
+    [SerializeField] private GameObject[] controlledObjects;
+    [SerializeField] private bool hideControlledWhenActive = true;
+    [Header("Audio")]
+    [SerializeField] private AudioClip activateClip;
+    [SerializeField, Range(0f, 1f)] private float activateVolume = 0.8f;
 
     private readonly HashSet<Collider2D> occupants = new HashSet<Collider2D>();
     private Collider2D plateCollider;
@@ -18,8 +23,7 @@ public class CastlePressurePlate : MonoBehaviour
 
     private void Awake()
     {
-        plateCollider = GetComponent<Collider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        EnsureInitialized();
         plateCollider.isTrigger = true;
 
         if (plateCollider is BoxCollider2D boxCollider)
@@ -27,13 +31,20 @@ public class CastlePressurePlate : MonoBehaviour
             CastleSpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
         }
 
-        ApplyState(false);
+        ApplyState(false, playSound: false);
     }
 
-    public void ApplyLinks(params CastleTrapLink[] links)
+    private void EnsureInitialized()
     {
-        trapLinks = links;
-        ApplyState(isPressed);
+        if (plateCollider == null)
+        {
+            plateCollider = GetComponent<Collider2D>();
+        }
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -87,43 +98,42 @@ public class CastlePressurePlate : MonoBehaviour
 
     private void UpdateState()
     {
-        ApplyState(occupants.Count > 0);
+        ApplyState(occupants.Count > 0, playSound: true);
     }
 
-    private void ApplyState(bool pressed)
+    private void ApplyState(bool pressed, bool playSound)
     {
+        EnsureInitialized();
+        bool stateChanged = pressed != isPressed;
         isPressed = pressed;
-        spriteRenderer.sprite = isPressed ? pressedSprite : defaultSprite;
 
-        if (trapLinks == null)
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sprite = isPressed ? pressedSprite : defaultSprite;
+        }
+
+        ApplyControlledObjects();
+
+        if (playSound && stateChanged && pressed && activateClip != null)
+        {
+            SettingsManager.PlaySfx(activateClip, transform.position, activateVolume);
+        }
+    }
+
+    private void ApplyControlledObjects()
+    {
+        if (controlledObjects == null)
         {
             return;
         }
 
-        for (int i = 0; i < trapLinks.Length; i++)
+        bool visible = hideControlledWhenActive ? !isPressed : isPressed;
+        for (int i = 0; i < controlledObjects.Length; i++)
         {
-            ApplyLink(trapLinks[i], isPressed);
-        }
-    }
-
-    private static void ApplyLink(CastleTrapLink link, bool sourceActive)
-    {
-        if (link.target == null)
-        {
-            return;
-        }
-
-        bool targetActive = link.invertActiveState ? !sourceActive : sourceActive;
-        link.target.SetActive(targetActive);
-        ApplyLinkedComponentStates(link.target, targetActive);
-    }
-
-    private static void ApplyLinkedComponentStates(GameObject linkedObject, bool targetActive)
-    {
-        CastleSpikeTrap spikeTrap = linkedObject.GetComponent<CastleSpikeTrap>();
-        if (spikeTrap != null)
-        {
-            spikeTrap.SetArmed(targetActive);
+            if (controlledObjects[i] != null)
+            {
+                controlledObjects[i].SetActive(visible);
+            }
         }
     }
 }

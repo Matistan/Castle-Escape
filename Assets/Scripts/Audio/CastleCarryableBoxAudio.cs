@@ -32,11 +32,11 @@ public class CastleCarryableBoxAudio : MonoBehaviour
 
         if (previousBodyType == RigidbodyType2D.Dynamic && currentBodyType == RigidbodyType2D.Kinematic && pickupClip != null)
         {
-            AudioSource.PlayClipAtPoint(pickupClip, transform.position, pickupVolume);
+            SettingsManager.PlaySfx(pickupClip, transform.position, pickupVolume);
         }
         else if (previousBodyType == RigidbodyType2D.Kinematic && currentBodyType == RigidbodyType2D.Dynamic && dropClip != null)
         {
-            AudioSource.PlayClipAtPoint(dropClip, transform.position, dropVolume);
+            SettingsManager.PlaySfx(dropClip, transform.position, dropVolume);
         }
 
         previousBodyType = currentBodyType;

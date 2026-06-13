@@ -5,11 +5,11 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class StartMenuPresenter : MonoBehaviour
 {
-    private Dictionary<string, VisualElement> views = new Dictionary<string, VisualElement>();
-    private Stack<VisualElement> history = new Stack<VisualElement>();
+    private readonly Dictionary<string, VisualElement> views = new Dictionary<string, VisualElement>();
+    private readonly Stack<VisualElement> history = new Stack<VisualElement>();
     private VisualElement currentView;
 
-    void Start()
+    private void Start()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         RegisterView("MainMenu", root.Q<VisualElement>("MainMenuUI"));
@@ -20,71 +20,116 @@ public class StartMenuPresenter : MonoBehaviour
         RegisterView("LanSettings", root.Q<VisualElement>("LanSettingsUI"));
 
         SetupSubPresenters();
-
         ShowView("MainMenu", clearHistory: true);
     }
 
     private void RegisterView(string name, VisualElement element)
     {
-        if (element != null)
+        if (element == null)
         {
-            views.Add(name, element);
-            element.style.display = DisplayStyle.None;
+            Debug.LogError($"{nameof(StartMenuPresenter)} could not find view '{name}'.", this);
+            return;
         }
+
+        views.Add(name, element);
+        element.style.display = DisplayStyle.None;
     }
 
     private void SetupSubPresenters()
     {
-        var mainMenuPresenter = new MainMenuPresenter(views["MainMenu"]);
-        mainMenuPresenter.OpenSettings = () => ShowView("Settings");
-        mainMenuPresenter.OpenLevelSelection = () => ShowView("LevelSelection");
-        mainMenuPresenter.OpenStoryMode = () => ShowView("StoryMode");
+        if (views.TryGetValue("MainMenu", out VisualElement mainMenuView))
+        {
+            var mainMenuPresenter = new MainMenuPresenter(mainMenuView);
+            mainMenuPresenter.OpenSettings = () => ShowView("Settings");
+            mainMenuPresenter.OpenLevelSelection = () => ShowView("LevelSelection");
+            mainMenuPresenter.OpenStoryMode = () => ShowView("StoryMode");
+        }
 
-        var settingsPresenter = new SettingsPresenter(views["Settings"]);
-        settingsPresenter.CloseSettings = () => GoBack();
+        if (views.TryGetValue("Settings", out VisualElement settingsView))
+        {
+            var settingsPresenter = new SettingsPresenter(settingsView);
+            settingsPresenter.CloseSettings = GoBack;
+        }
 
-        var levelSelectionPresenter = new LevelSelectionPresenter(views["LevelSelection"]);
-        levelSelectionPresenter.OpenMultiplayerMenu = () => ShowView("Multiplayer");
-        levelSelectionPresenter.OpenMainMenu = () => GoBack();
+        if (views.TryGetValue("LevelSelection", out VisualElement levelSelectionView))
+        {
+            var levelSelectionPresenter = new LevelSelectionPresenter(levelSelectionView);
+            levelSelectionPresenter.OpenMainMenu = GoBack;
+            levelSelectionPresenter.SelectLevel = level =>
+            {
+                if (CastleSaveManager.IsLevelSelectableInFreeMode(level))
+                {
+                    CastleGameFlow.StartFreeModeLevel(level);
+                }
+            };
+        }
 
-        var storyModePresenter = new StoryModePresenter(views["StoryMode"]);
-        storyModePresenter.OpenMainMenu = () => GoBack();
-        storyModePresenter.OpenMultiplayerMenu = () => ShowView("Multiplayer");
+        if (views.TryGetValue("StoryMode", out VisualElement storyModeView))
+        {
+            var storyModePresenter = new StoryModePresenter(storyModeView);
+            storyModePresenter.OpenMainMenu = GoBack;
+            storyModePresenter.StartNewGame = CastleGameFlow.StartStoryNewGame;
+            storyModePresenter.ContinueGame = CastleGameFlow.ContinueStory;
+        }
 
-        var multiplayerPresenter = new MultiplayerPresenter(views["Multiplayer"]);
-        multiplayerPresenter.OpenMainMenu = () => ShowView("MainMenu", true);
-        multiplayerPresenter.OpenLocalGame = () => Debug.Log("Start Local Game");
-        multiplayerPresenter.OpenLanSettings = () => ShowView("LanSettings");
-        multiplayerPresenter.GoBack = () => GoBack();
+        if (views.TryGetValue("Multiplayer", out VisualElement multiplayerView))
+        {
+            var multiplayerPresenter = new MultiplayerPresenter(multiplayerView);
+            multiplayerPresenter.OpenMainMenu = () => ShowView("MainMenu", clearHistory: true);
+            multiplayerPresenter.OpenLocalGame = CastleGameFlow.StartLocalGame;
+            multiplayerPresenter.OpenLanSettings = () => ShowView("LanSettings");
+            multiplayerPresenter.GoBack = GoBack;
+        }
 
-        var lanSettingsPresenter = new LanSettingsPresenter(views["LanSettings"]);
-        lanSettingsPresenter.HostGame = () => Debug.Log("Host LAN Game");
-        lanSettingsPresenter.JoinGame = () => Debug.Log("Join LAN Game");
-        lanSettingsPresenter.GoBack = () => GoBack();
-        lanSettingsPresenter.OpenMainMenu = () => ShowView("MainMenu", true);
+        if (views.TryGetValue("LanSettings", out VisualElement lanSettingsView))
+        {
+            var lanSettingsPresenter = new LanSettingsPresenter(lanSettingsView);
+            lanSettingsPresenter.HostGame = () => Debug.Log("LAN hosting is not implemented yet.");
+            lanSettingsPresenter.JoinGame = () => Debug.Log("LAN joining is not implemented yet.");
+            lanSettingsPresenter.GoBack = GoBack;
+            lanSettingsPresenter.OpenMainMenu = () => ShowView("MainMenu", clearHistory: true);
+        }
     }
 
     public void ShowView(string viewName, bool clearHistory = false)
     {
-        if (!views.ContainsKey(viewName)) return;
+        if (!views.TryGetValue(viewName, out VisualElement nextView))
+        {
+            Debug.LogError($"{nameof(StartMenuPresenter)} missing view '{viewName}'.", this);
+            return;
+        }
 
-        if (clearHistory) history.Clear();
-        else if (currentView != null) history.Push(currentView);
+        if (clearHistory)
+        {
+            history.Clear();
+        }
+        else if (currentView != null)
+        {
+            history.Push(currentView);
+        }
 
-        if (currentView != null) currentView.style.display = DisplayStyle.None;
+        if (currentView != null)
+        {
+            currentView.style.display = DisplayStyle.None;
+        }
 
-        currentView = views[viewName];
+        currentView = nextView;
         currentView.style.display = DisplayStyle.Flex;
     }
 
     public void GoBack()
     {
-        if (history.Count > 0)
+        if (history.Count == 0)
         {
-            if (currentView != null) currentView.style.display = DisplayStyle.None;
-
-            currentView = history.Pop();
-            currentView.style.display = DisplayStyle.Flex;
+            return;
         }
+
+        if (currentView != null)
+        {
+            currentView.style.display = DisplayStyle.None;
+        }
+
+        currentView = history.Pop();
+        currentView.style.display = DisplayStyle.Flex;
     }
 }

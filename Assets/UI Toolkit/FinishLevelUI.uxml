@@ -2,7 +2,8 @@
     <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=9375a12514aff8542b816042e0b7270f&amp;type=3#MainMenuStyle"/>
     <ui:VisualElement name="Container" style="flex-grow: 1; background-color: rgba(12, 12, 12, 0.65);">
         <ui:Label text="Congratulations!" name="Header" enable-rich-text="true" class="header" style="align-self: center; margin-top: 130px;"/>
-        <ui:Button text="Next Level" name="NextLevelButton" class="button" style="font-size: 59px; margin-top: 150px;"/>
+        <ui:Label text="Time: 00:00:000&#10;Collectibles: 0/0&#10;Score: 0&#10;Stars: 1/3" name="SummaryLabel" class="header" style="align-self: center; font-size: 42px; margin-top: 40px; white-space: normal;"/>
+        <ui:Button text="Next Level" name="NextLevelButton" class="button" style="font-size: 59px; margin-top: 80px;"/>
         <ui:Button text="Retry" name="RetryButton" class="button" style="font-size: 59px; margin-top: 100px;"/>
         <ui:Button text="Main Menu" name="MainMenuButton" class="button" style="font-size: 59px;"/>
     </ui:VisualElement>

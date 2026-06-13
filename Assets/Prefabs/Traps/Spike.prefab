@@ -151,4 +151,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7289d9a5b40a498a8e9de27e4d2f7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CastleSpikeTrap
-  startArmed: 1

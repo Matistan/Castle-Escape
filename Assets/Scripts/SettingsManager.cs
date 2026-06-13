@@ -4,6 +4,7 @@ public static class SettingsManager
 {
     private const int defaultMasterVolume = 5;
     private const int defaultMusicVolume = 10;
+    private const int defaultSoundVolume = 10;
 
     public static int MasterVolume
     {
@@ -27,7 +28,7 @@ public static class SettingsManager
 
     public static int SoundVolume
     {
-        get => PlayerPrefs.GetInt("SoundVolume", defaultMusicVolume);
+        get => PlayerPrefs.GetInt("SoundVolume", defaultSoundVolume);
         set
         {
             PlayerPrefs.SetInt("SoundVolume", value);
@@ -35,36 +36,50 @@ public static class SettingsManager
         }
     }
 
+    public static float SfxVolumeMultiplier => NormalizeVolume(SoundVolume);
+
+    public static float MusicVolumeMultiplier => NormalizeVolume(MusicVolume);
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void InitializeSettings()
     {
         ApplyMasterVolume(MasterVolume);
         ApplyMusicVolume(MusicVolume);
         ApplySoundVolume(SoundVolume);
-
-        Debug.Log("Settings Manager Automatically Initialized!");
     }
 
-    private static void ApplyMasterVolume(int volume)
+    public static void PlaySfx(AudioClip clip, Vector3 position, float volumeScale = 1f)
     {
-        // Implement logic to apply master volume to the audio system
-        Debug.Log($"Master Volume set to: {volume}");
-    }
+        if (clip == null)
+        {
+            return;
+        }
 
-    private static void ApplyMusicVolume(int volume)
-    {
-        // Implement logic to apply music volume to the audio system
-        Debug.Log($"Music Volume set to: {volume}");
-    }
-
-    private static void ApplySoundVolume(int volume)
-    {
-        // Implement logic to apply sound volume to the audio system
-        Debug.Log($"Sound Volume set to: {volume}");
+        AudioSource.PlayClipAtPoint(clip, position, volumeScale * SfxVolumeMultiplier);
     }
 
     public static void SaveToDisk()
     {
         PlayerPrefs.Save();
+    }
+
+    private static void ApplyMasterVolume(int volume)
+    {
+        AudioListener.volume = NormalizeVolume(volume);
+    }
+
+    private static void ApplyMusicVolume(int volume)
+    {
+        // Reserved for music playback when BGM is added.
+    }
+
+    private static void ApplySoundVolume(int volume)
+    {
+        // SFX use SfxVolumeMultiplier at play time.
+    }
+
+    private static float NormalizeVolume(int sliderValue)
+    {
+        return Mathf.Clamp01(sliderValue / 10f);
     }
 }
