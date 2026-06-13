@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="GameUI" src="project://database/Assets/UI%20Toolkit/GameUI.uxml?fileID=9197481963319205126&amp;guid=e8c2b68a85631304299e1f70085b91b7&amp;type=3#GameUI"/>
+    <ui:Template name="PauseScreenUI" src="project://database/Assets/UI%20Toolkit/PauseScreenUI.uxml?fileID=9197481963319205126&amp;guid=23d0c56be765fe64cb9177d4a50fb8e1&amp;type=3#PauseScreenUI"/>
+    <ui:Template name="SettingsUI" src="project://database/Assets/UI%20Toolkit/SettingsUI.uxml?fileID=9197481963319205126&amp;guid=21c7443f291b7d14d935a665a4177a24&amp;type=3#SettingsUI"/>
+    <ui:Instance template="GameUI" name="GameUI" style="flex-grow: 1; display: flex;"/>
+    <ui:Instance template="PauseScreenUI" name="PauseScreenUI" style="flex-grow: 1; display: none;"/>
+    <ui:Instance template="SettingsUI" name="SettingsUI" style="display: none; flex-grow: 1;"/>
+</ui:UXML>

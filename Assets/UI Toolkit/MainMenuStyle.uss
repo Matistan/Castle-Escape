@@ -97,3 +97,29 @@
     visibility: visible;
     position: absolute;
 }
+
+
+
+.pause-button {
+    font-size: 64px;
+    width: 100px;
+    height: 100px;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 15px;
+    background-image: url("project://database/Assets/Sprites/DEVNIK%202D/2D%20UI%20PIXEL%20BUTTONS/UI%20SIMPLE%20PIXEL%20UNSPLIT.png?fileID=-708245964&guid=a37e8466236089c45b610370218b5353&type=3#PAUSE_BUTTON");
+    -unity-font-definition: url("project://database/Assets/Fonts/ByteBounce.asset?fileID=11400000&guid=52ff1e36bacbe47448d2be1929ad955d&type=2#ByteBounce");
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    align-items: stretch;
+    justify-content: flex-start;
+    align-content: flex-start;
+    margin-left: 15px;
+}

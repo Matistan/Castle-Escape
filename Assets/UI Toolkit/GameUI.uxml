@@ -1,0 +1,7 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=9375a12514aff8542b816042e0b7270f&amp;type=3"/>
+    <ui:VisualElement name="Container" style="flex-grow: 1; flex-direction: row;">
+        <ui:Button text="" name="PauseButton" class="pause-button"/>
+        <ui:Label text="Time: 00:00:000&#10;Stars collected: 0" name="ScoreLabel" class="header" style="align-self: flex-start; font-size: 90px; margin-left: 25px; margin-top: 10px;"/>
+    </ui:VisualElement>
+</ui:UXML>
