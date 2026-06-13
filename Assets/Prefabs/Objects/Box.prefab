@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5992754195394262652}
   - component: {fileID: 1720858533028185251}
   m_Layer: 0
-  m_Name: Crate
+  m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,6 +181,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CastleCarryableBox
   carriedVelocity: {x: 0, y: 0}
+  stackSearchHalfWidth: 0.45
+  heldScaleMultiplier: 0.75
+  pickupClip: {fileID: 8300000, guid: a1f132dbe2d5c4679b04c51f97fbf8b9, type: 3}
+  dropClip: {fileID: 8300000, guid: e525628d8caf64c81af797ac37e617c3, type: 3}
+  pickupVolume: 0.8
+  dropVolume: 0.9
 --- !u!114 &1720858533028185251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,7 +199,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b0ad28110cf4b9787058375d7a5ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CastleCarryableBoxAudio
-  pickupClip: {fileID: 8300000, guid: a1f132dbe2d5c4679b04c51f97fbf8b9, type: 3}
-  dropClip: {fileID: 8300000, guid: e525628d8caf64c81af797ac37e617c3, type: 3}
-  pickupVolume: 0.8
-  dropVolume: 0.9

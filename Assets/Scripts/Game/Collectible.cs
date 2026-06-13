@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class CastleCollectible : MonoBehaviour
+public class Collectible : MonoBehaviour
 {
     private Collider2D collectibleCollider;
     private bool isCollected;
@@ -26,15 +26,15 @@ public class CastleCollectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (isCollected || other.GetComponentInParent<CastlePlayerMovement>() == null)
+        if (isCollected || other.GetComponentInParent<PlayerMovement>() == null)
         {
             return;
         }
 
         isCollected = true;
-        if (CastleLevelManager.Instance != null)
+        if (LevelManager.Instance != null)
         {
-            CastleLevelManager.Instance.CollectPickup();
+            LevelManager.Instance.CollectPickup();
         }
 
         gameObject.SetActive(false);

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class CastleLevelBackground : MonoBehaviour
+public class LevelBackground : MonoBehaviour
 {
     [SerializeField] private Camera targetCamera;
     [SerializeField] private float padding = 1f;

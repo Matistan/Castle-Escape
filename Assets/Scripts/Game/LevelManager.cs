@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CastleLevelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    public static CastleLevelManager Instance { get; private set; }
+    public static LevelManager Instance { get; private set; }
 
     [SerializeField] private int levelIndex = 1;
     [SerializeField] private float parTimeSeconds = 120f;
     [SerializeField] private int pointsPerCollectible = 100;
 
-    private readonly HashSet<CastlePlayerMovement> playersAtExit = new HashSet<CastlePlayerMovement>();
-    private readonly List<CastlePlayerMovement> activePlayers = new List<CastlePlayerMovement>();
+    private readonly HashSet<PlayerMovement> playersAtExit = new HashSet<PlayerMovement>();
+    private readonly List<PlayerMovement> activePlayers = new List<PlayerMovement>();
 
     private int registeredCollectibles;
     private int collectedCount;
@@ -27,7 +27,7 @@ public class CastleLevelManager : MonoBehaviour
     public bool IsCompleted => isCompleted;
     public bool IsPaused => isPaused;
 
-    public event Action<CastleLevelResults> LevelCompleted;
+    public event Action<LevelResults> LevelCompleted;
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class CastleLevelManager : MonoBehaviour
     private void Start()
     {
         CachePlayers();
-        registeredCollectibles = FindObjectsByType<CastleCollectible>(FindObjectsSortMode.None).Length;
+        registeredCollectibles = FindObjectsByType<Collectible>(FindObjectsSortMode.None).Length;
         BeginLevel();
     }
 
@@ -91,7 +91,7 @@ public class CastleLevelManager : MonoBehaviour
         collectedCount++;
     }
 
-    public void RegisterPlayerAtExit(CastlePlayerMovement player)
+    public void RegisterPlayerAtExit(PlayerMovement player)
     {
         if (isCompleted || player == null)
         {
@@ -105,7 +105,7 @@ public class CastleLevelManager : MonoBehaviour
         }
     }
 
-    public void UnregisterPlayerAtExit(CastlePlayerMovement player)
+    public void UnregisterPlayerAtExit(PlayerMovement player)
     {
         playersAtExit.Remove(player);
     }
@@ -121,11 +121,11 @@ public class CastleLevelManager : MonoBehaviour
         Time.timeScale = paused ? 0f : 1f;
     }
 
-    public CastleLevelResults BuildResults()
+    public LevelResults BuildResults()
     {
         int stars = CalculateStars();
         int score = collectedCount * pointsPerCollectible;
-        return new CastleLevelResults(levelIndex, elapsedTime, collectedCount, registeredCollectibles, stars, score);
+        return new LevelResults(levelIndex, elapsedTime, collectedCount, registeredCollectibles, stars, score);
     }
 
     private void CompleteLevel()
@@ -140,8 +140,8 @@ public class CastleLevelManager : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
 
-        CastleLevelResults results = BuildResults();
-        CastleSaveManager.RecordLevelCompletion(
+        LevelResults results = BuildResults();
+        SaveManager.RecordLevelCompletion(
             results.LevelIndex,
             results.ElapsedTime,
             results.Stars,
@@ -171,13 +171,13 @@ public class CastleLevelManager : MonoBehaviour
     private void CachePlayers()
     {
         activePlayers.Clear();
-        activePlayers.AddRange(FindObjectsByType<CastlePlayerMovement>(FindObjectsSortMode.None));
+        activePlayers.AddRange(FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None));
     }
 }
 
-public readonly struct CastleLevelResults
+public readonly struct LevelResults
 {
-    public CastleLevelResults(int levelIndex, float elapsedTime, int collectedCount, int totalCollectibles, int stars, int score)
+    public LevelResults(int levelIndex, float elapsedTime, int collectedCount, int totalCollectibles, int stars, int score)
     {
         LevelIndex = levelIndex;
         ElapsedTime = elapsedTime;

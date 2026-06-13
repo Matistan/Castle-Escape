@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d1e2f3a4b5c6789012345678abcdef02
+guid: d1e2f3a4b5c6789012345678abcdef01
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -45,7 +45,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 220
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LevelBackground2
+      name: LevelBackground1
       rect:
         serializedVersion: 2
         x: 0
@@ -132,7 +132,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      LevelBackground2: 21300000
+      LevelBackground1: 21300000
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

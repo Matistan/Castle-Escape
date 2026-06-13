@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum CastleGameMode
+public enum GameMode
 {
     Story,
     FreeMode
 }
 
-public static class CastleGameFlow
+public static class GameFlow
 {
     public const string MainMenuScene = "Main Menu";
     public const string Level1Scene = "Level 1";
@@ -15,7 +15,7 @@ public static class CastleGameFlow
     public const string Level3Scene = "Level 3";
     public const int TotalStoryLevels = 3;
 
-    public static CastleGameMode CurrentMode { get; set; } = CastleGameMode.Story;
+    public static GameMode CurrentMode { get; set; } = GameMode.Story;
     public static int SelectedLevel { get; set; } = 1;
 
     public static string GetLevelSceneName(int level)
@@ -49,29 +49,29 @@ public static class CastleGameFlow
 
     public static void StartStoryNewGame()
     {
-        CurrentMode = CastleGameMode.Story;
+        CurrentMode = GameMode.Story;
         SelectedLevel = 1;
-        CastleSaveManager.ResetStoryProgress();
+        SaveManager.ResetStoryProgress();
         LoadSelectedLevel();
     }
 
     public static void ContinueStory()
     {
-        CurrentMode = CastleGameMode.Story;
-        SelectedLevel = Mathf.Clamp(CastleSaveManager.StoryProgressLevel, 1, TotalStoryLevels);
+        CurrentMode = GameMode.Story;
+        SelectedLevel = Mathf.Clamp(SaveManager.StoryProgressLevel, 1, TotalStoryLevels);
         LoadSelectedLevel();
     }
 
     public static void StartFreeModeLevel(int level)
     {
-        CurrentMode = CastleGameMode.FreeMode;
+        CurrentMode = GameMode.FreeMode;
         SelectedLevel = level;
         LoadSelectedLevel();
     }
 
     public static void StartLocalGame()
     {
-        CurrentMode = CastleGameMode.Story;
+        CurrentMode = GameMode.Story;
         SelectedLevel = 1;
         LoadSelectedLevel();
     }

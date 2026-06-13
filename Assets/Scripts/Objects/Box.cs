@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-public class CastleCarryableBox : MonoBehaviour
+public class Box : MonoBehaviour
 {
     [SerializeField] private Vector2 carriedVelocity = Vector2.zero;
 
@@ -17,6 +17,12 @@ public class CastleCarryableBox : MonoBehaviour
     private bool wasKinematic;
     private float originalGravityScale;
     private float stackHeight;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip pickupClip;
+    [SerializeField] private AudioClip dropClip;
+    [SerializeField, Range(0f, 1f)] private float pickupVolume = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float dropVolume = 0.9f;
 
     public bool IsHeld => holder != null;
 
@@ -56,6 +62,8 @@ public class CastleCarryableBox : MonoBehaviour
         boxCollider.enabled = false;
         transform.localScale = originalScale * heldScaleMultiplier;
         transform.position = holder.TransformPoint(localHoldOffset);
+
+        SettingsManager.PlaySfx(pickupClip, transform.position, pickupVolume);
     }
 
     public void UpdateHoldOffset(Vector3 holdOffset)
@@ -78,6 +86,8 @@ public class CastleCarryableBox : MonoBehaviour
         body.gravityScale = originalGravityScale;
         body.linearVelocity = Vector2.zero;
         body.angularVelocity = 0f;
+
+        SettingsManager.PlaySfx(dropClip, transform.position, dropVolume);
     }
 
     private Vector3 ResolveStackedPosition(Vector3 worldPosition)
@@ -89,7 +99,7 @@ public class CastleCarryableBox : MonoBehaviour
         float highestSupportTop = float.MinValue;
         for (int i = 0; i < overlaps.Length; i++)
         {
-            CastleCarryableBox otherBox = overlaps[i].GetComponentInParent<CastleCarryableBox>();
+            Box otherBox = overlaps[i].GetComponentInParent<Box>();
             if (otherBox == null || otherBox == this || otherBox.IsHeld)
             {
                 continue;

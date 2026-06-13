@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class CastleLever : MonoBehaviour
+public class Lever : MonoBehaviour
 {
     [SerializeField] private bool startOn;
     [SerializeField] private Sprite offSprite;
@@ -34,15 +34,15 @@ public class CastleLever : MonoBehaviour
 
         if (leverCollider is BoxCollider2D boxCollider)
         {
-            CastleSpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
+            SpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
         }
 
         SetStateImmediate(startOn);
     }
 
-    public static bool TryFindNearestInRange(Vector3 position, float radius, out CastleLever nearestLever)
+    public static bool TryFindNearestInRange(Vector3 position, float radius, out Lever nearestLever)
     {
-        CastleLever[] levers = FindObjectsByType<CastleLever>(FindObjectsSortMode.None);
+        Lever[] levers = FindObjectsByType<Lever>(FindObjectsSortMode.None);
         nearestLever = null;
         float nearestDistance = float.MaxValue;
 

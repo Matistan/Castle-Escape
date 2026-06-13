@@ -18,6 +18,6 @@ public class StoryModePresenter
         continueButton = root.Q<Button>("ContinueButton");
         mainMenuButton = root.Q<Button>("MainMenuButton");
 
-        continueButton.SetEnabled(CastleSaveManager.HasStoryProgress);
+        continueButton.SetEnabled(SaveManager.HasStoryProgress);
     }
 }

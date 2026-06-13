@@ -7,7 +7,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-image: url("project://database/Assets/Sprites/Generated/MainMenuBackground.png?fileID=21300000&guid=f1a2b3c4d5e6789012345678abcdef90&type=3#MainMenuBackground");
+    background-image: url("project://database/Assets/Sprites/Other/MainMenuBackground.png?fileID=21300000&guid=f1a2b3c4d5e6789012345678abcdef90&type=3#MainMenuBackground");
     -unity-background-scale-mode: scale-and-crop;
 }
 
@@ -28,7 +28,7 @@
     align-self: center;
     margin-top: 16px;
     margin-bottom: 4px;
-    background-image: url("project://database/Assets/Sprites/Generated/CastleEscapeTitle.png?fileID=21300000&guid=6db919cced5184a39a2b4a7cb2951bf0&type=3#CastleEscapeTitle");
+    background-image: url("project://database/Assets/Sprites/Other/CastleEscapeTitle.png?fileID=21300000&guid=6db919cced5184a39a2b4a7cb2951bf0&type=3#CastleEscapeTitle");
     -unity-background-scale-mode: scale-to-fit;
 }
 
@@ -150,9 +150,8 @@
     overflow: visible;
     visibility: visible;
     position: absolute;
+    color: rgb(221, 221, 221);
 }
-
-
 
 .pause-button {
     font-size: 64px;

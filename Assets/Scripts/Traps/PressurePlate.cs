@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class CastlePressurePlate : MonoBehaviour
+public class PressurePlate : MonoBehaviour
 {
     [SerializeField] private Sprite defaultSprite;
     [SerializeField] private Sprite pressedSprite;
@@ -28,7 +28,7 @@ public class CastlePressurePlate : MonoBehaviour
 
         if (plateCollider is BoxCollider2D boxCollider)
         {
-            CastleSpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
+            SpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
         }
 
         ApplyState(false, playSound: false);
@@ -87,12 +87,12 @@ public class CastlePressurePlate : MonoBehaviour
             return false;
         }
 
-        if (other.GetComponentInParent<CastlePlayerMovement>() != null)
+        if (other.GetComponentInParent<PlayerMovement>() != null)
         {
             return true;
         }
 
-        CastleCarryableBox box = other.GetComponentInParent<CastleCarryableBox>();
+        Box box = other.GetComponentInParent<Box>();
         return box != null && !box.IsHeld;
     }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class CastleLevelReset
+public static class LevelReset
 {
     private static bool isResetting;
 

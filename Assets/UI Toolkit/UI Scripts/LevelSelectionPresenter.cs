@@ -43,7 +43,7 @@ public class LevelSelectionPresenter
             return;
         }
 
-        bool selectable = CastleSaveManager.IsLevelSelectableInFreeMode(level);
+        bool selectable = SaveManager.IsLevelSelectableInFreeMode(level);
         button.SetEnabled(selectable);
 
         if (!selectable)
@@ -52,8 +52,8 @@ public class LevelSelectionPresenter
             return;
         }
 
-        float bestTime = CastleSaveManager.GetBestTime(level);
-        int bestStars = CastleSaveManager.GetBestStars(level);
+        float bestTime = SaveManager.GetBestTime(level);
+        int bestStars = SaveManager.GetBestStars(level);
         button.text = $"Level {level}\nBest Time: {FormatTime(bestTime)}\nBest Score: {bestStars} Star(s)";
     }
 

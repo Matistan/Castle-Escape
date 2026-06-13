@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
-public class CastlePlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private CastlePlayerId playerId;
+    [SerializeField] private PlayerId playerId;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private float jumpBufferTime = 0.12f;
@@ -17,16 +17,20 @@ public class CastlePlayerMovement : MonoBehaviour
     [SerializeField] private Vector2 placeOffset = new Vector2(0.9f, -0.35f);
     [SerializeField] private LayerMask groundLayers = ~0;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField, Range(0f, 1f)] private float jumpVolume = 0.85f;
+
     private Rigidbody2D body;
     private Collider2D bodyCollider;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
-    private CastlePlayerInputSnapshot input;
-    private CastleCarryableBox heldBox;
+    private PlayerInputSnapshot input;
+    private Box heldBox;
     private float jumpBufferTimer;
     private int facingDirection = 1;
 
-    public CastlePlayerId PlayerId
+    public PlayerId PlayerId
     {
         get => playerId;
         set => playerId = value;
@@ -54,7 +58,7 @@ public class CastlePlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        CastleInputManager inputManager = CastleInputManager.Instance;
+        InputManager inputManager = InputManager.Instance;
         if (inputManager == null)
         {
             input = default;
@@ -98,6 +102,7 @@ public class CastlePlayerMovement : MonoBehaviour
             velocity.y = effectiveJumpForce;
             jumpBufferTimer = 0f;
             grounded = false;
+            SettingsManager.PlaySfx(jumpClip, transform.position, jumpVolume);
         }
 
         body.linearVelocity = velocity;
@@ -143,7 +148,7 @@ public class CastlePlayerMovement : MonoBehaviour
 
     private bool TryInteractWithLever()
     {
-        if (!CastleLever.TryFindNearestInRange(transform.position, pickupRadius, out CastleLever nearestLever))
+        if (!Lever.TryFindNearestInRange(transform.position, pickupRadius, out Lever nearestLever))
         {
             return false;
         }
@@ -152,15 +157,15 @@ public class CastlePlayerMovement : MonoBehaviour
         return true;
     }
 
-    private CastleCarryableBox FindNearestCarryableBox()
+    private Box FindNearestCarryableBox()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, pickupRadius);
-        CastleCarryableBox nearestBox = null;
+        Box nearestBox = null;
         float nearestDistance = float.MaxValue;
 
         for (int i = 0; i < hits.Length; i++)
         {
-            CastleCarryableBox box = hits[i].GetComponentInParent<CastleCarryableBox>();
+            Box box = hits[i].GetComponentInParent<Box>();
             if (box == null || box.IsHeld)
             {
                 continue;

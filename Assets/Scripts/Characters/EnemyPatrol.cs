@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
-public class CastleEnemyPatrol : MonoBehaviour
+public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float alertMoveSpeed = 3.5f;
@@ -29,7 +29,7 @@ public class CastleEnemyPatrol : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CastlePlayerMovement closestPlayer = FindClosestPlayer(out float closestDistance);
+        PlayerMovement closestPlayer = FindClosestPlayer(out float closestDistance);
         bool isAlert = closestPlayer != null && closestDistance <= detectionRadius;
         float currentSpeed = isAlert ? alertMoveSpeed : moveSpeed;
 
@@ -61,10 +61,10 @@ public class CastleEnemyPatrol : MonoBehaviour
         }
     }
 
-    private CastlePlayerMovement FindClosestPlayer(out float closestDistance)
+    private PlayerMovement FindClosestPlayer(out float closestDistance)
     {
-        CastlePlayerMovement[] players = FindObjectsByType<CastlePlayerMovement>(FindObjectsSortMode.None);
-        CastlePlayerMovement closestPlayer = null;
+        PlayerMovement[] players = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None);
+        PlayerMovement closestPlayer = null;
         closestDistance = float.MaxValue;
 
         for (int i = 0; i < players.Length; i++)
@@ -93,7 +93,7 @@ public class CastleEnemyPatrol : MonoBehaviour
                 continue;
             }
 
-            CastleCarryableBox box = hits[i].collider.GetComponentInParent<CastleCarryableBox>();
+            Box box = hits[i].collider.GetComponentInParent<Box>();
             if (box != null && !box.IsHeld)
             {
                 return true;
@@ -115,13 +115,13 @@ public class CastleEnemyPatrol : MonoBehaviour
 
     private void TryResetLevel(Collider2D other)
     {
-        if (isResetting || other.GetComponentInParent<CastlePlayerMovement>() == null)
+        if (isResetting || other.GetComponentInParent<PlayerMovement>() == null)
         {
             return;
         }
 
         isResetting = true;
-        CastleLevelReset.RequestReset();
+        LevelReset.RequestReset();
     }
 
     private void PlayAnimation(string stateName)

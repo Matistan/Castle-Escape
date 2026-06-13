@@ -25,7 +25,7 @@ public class FinishLevelPresenter
         mainMenuButton = root.Q<Button>("MainMenuButton");
     }
 
-    public void ShowResults(CastleLevelResults results)
+    public void ShowResults(LevelResults results)
     {
         headerLabel.text = "Level Complete!";
         summaryLabel.text =
@@ -34,7 +34,7 @@ public class FinishLevelPresenter
             $"Score: {results.Score}\n" +
             $"Stars: {results.Stars}/3";
 
-        bool hasNextLevel = results.LevelIndex < CastleGameFlow.TotalStoryLevels;
+        bool hasNextLevel = results.LevelIndex < GameFlow.TotalStoryLevels;
         nextLevelButton.style.display = hasNextLevel ? DisplayStyle.Flex : DisplayStyle.None;
         root.style.display = DisplayStyle.Flex;
     }

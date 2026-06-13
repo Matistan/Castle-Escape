@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class CastleSpriteColliderUtility
+public static class SpriteColliderUtility
 {
     public static void FitBoxColliderToSprite(BoxCollider2D boxCollider, SpriteRenderer spriteRenderer, float padding = 0.02f)
     {

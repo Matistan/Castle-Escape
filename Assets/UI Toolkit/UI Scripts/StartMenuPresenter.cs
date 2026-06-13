@@ -57,9 +57,9 @@ public class StartMenuPresenter : MonoBehaviour
             levelSelectionPresenter.OpenMainMenu = GoBack;
             levelSelectionPresenter.SelectLevel = level =>
             {
-                if (CastleSaveManager.IsLevelSelectableInFreeMode(level))
+                if (SaveManager.IsLevelSelectableInFreeMode(level))
                 {
-                    CastleGameFlow.StartFreeModeLevel(level);
+                    GameFlow.StartFreeModeLevel(level);
                 }
             };
         }
@@ -68,15 +68,15 @@ public class StartMenuPresenter : MonoBehaviour
         {
             var storyModePresenter = new StoryModePresenter(storyModeView);
             storyModePresenter.OpenMainMenu = GoBack;
-            storyModePresenter.StartNewGame = CastleGameFlow.StartStoryNewGame;
-            storyModePresenter.ContinueGame = CastleGameFlow.ContinueStory;
+            storyModePresenter.StartNewGame = GameFlow.StartStoryNewGame;
+            storyModePresenter.ContinueGame = GameFlow.ContinueStory;
         }
 
         if (views.TryGetValue("Multiplayer", out VisualElement multiplayerView))
         {
             var multiplayerPresenter = new MultiplayerPresenter(multiplayerView);
             multiplayerPresenter.OpenMainMenu = () => ShowView("MainMenu", clearHistory: true);
-            multiplayerPresenter.OpenLocalGame = CastleGameFlow.StartLocalGame;
+            multiplayerPresenter.OpenLocalGame = GameFlow.StartLocalGame;
             multiplayerPresenter.OpenLanSettings = () => ShowView("LanSettings");
             multiplayerPresenter.GoBack = GoBack;
         }

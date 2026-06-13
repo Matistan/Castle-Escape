@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum CastlePlayerId
+public enum PlayerId
 {
     PlayerOne,
     PlayerTwo
 }
 
-public readonly struct CastlePlayerInputSnapshot
+public readonly struct PlayerInputSnapshot
 {
-    public CastlePlayerInputSnapshot(Vector2 move, bool jumpPressed, bool jumpHeld, bool interactPressed, bool interactHeld, bool pausePressed)
+    public PlayerInputSnapshot(Vector2 move, bool jumpPressed, bool jumpHeld, bool interactPressed, bool interactHeld, bool pausePressed)
     {
         Move = move;
         JumpPressed = jumpPressed;
@@ -28,14 +28,14 @@ public readonly struct CastlePlayerInputSnapshot
 }
 
 [DefaultExecutionOrder(-100)]
-public class CastleInputManager : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
-    public static CastleInputManager Instance { get; private set; }
+    public static InputManager Instance { get; private set; }
 
     [SerializeField] private InputActionAsset inputActions;
 
-    public CastlePlayerInputSnapshot PlayerOne { get; private set; }
-    public CastlePlayerInputSnapshot PlayerTwo { get; private set; }
+    public PlayerInputSnapshot PlayerOne { get; private set; }
+    public PlayerInputSnapshot PlayerTwo { get; private set; }
 
     private PlayerActionSet playerOneActions;
     private PlayerActionSet playerTwoActions;
@@ -53,7 +53,7 @@ public class CastleInputManager : MonoBehaviour
 
         if (inputActions == null)
         {
-            Debug.LogError($"{nameof(CastleInputManager)} needs an InputActionAsset assigned.", this);
+            Debug.LogError($"{nameof(InputManager)} needs an InputActionAsset assigned.", this);
             enabled = false;
             return;
         }
@@ -97,9 +97,9 @@ public class CastleInputManager : MonoBehaviour
         PlayerTwo = playerTwoActions.ReadSnapshot();
     }
 
-    public CastlePlayerInputSnapshot GetSnapshot(CastlePlayerId playerId)
+    public PlayerInputSnapshot GetSnapshot(PlayerId playerId)
     {
-        return playerId == CastlePlayerId.PlayerOne ? PlayerOne : PlayerTwo;
+        return playerId == PlayerId.PlayerOne ? PlayerOne : PlayerTwo;
     }
 
     private sealed class PlayerActionSet
@@ -129,9 +129,9 @@ public class CastleInputManager : MonoBehaviour
             actionMap.Disable();
         }
 
-        public CastlePlayerInputSnapshot ReadSnapshot()
+        public PlayerInputSnapshot ReadSnapshot()
         {
-            return new CastlePlayerInputSnapshot(
+            return new PlayerInputSnapshot(
                 new Vector2(move.ReadValue<float>(), 0f),
                 jump.WasPressedThisFrame(),
                 jump.IsPressed(),

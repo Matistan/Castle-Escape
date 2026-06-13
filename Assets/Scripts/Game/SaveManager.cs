@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public static class CastleSaveManager
+public static class SaveManager
 {
-    private const string StoryProgressKey = "CastleStoryProgress";
-    private const string StoryCompletedKey = "CastleStoryCompleted";
-    private const string FreeModeUnlockedKey = "CastleFreeModeUnlocked";
-    private const string BestTimePrefix = "CastleBestTime_";
-    private const string BestStarsPrefix = "CastleBestStars_";
-    private const string BestScorePrefix = "CastleBestScore_";
+    private const string StoryProgressKey = "StoryProgress";
+    private const string StoryCompletedKey = "StoryCompleted";
+    private const string FreeModeUnlockedKey = "FreeModeUnlocked";
+    private const string BestTimePrefix = "BestTime_";
+    private const string BestStarsPrefix = "BestStars_";
+    private const string BestScorePrefix = "BestScore_";
 
     public static int StoryProgressLevel
     {
@@ -93,12 +93,12 @@ public static class CastleSaveManager
             PlayerPrefs.SetInt(BestScorePrefix + level, score);
         }
 
-        if (CastleGameFlow.CurrentMode == CastleGameMode.Story && level >= StoryProgressLevel)
+        if (GameFlow.CurrentMode == GameMode.Story && level >= StoryProgressLevel)
         {
             StoryProgressLevel = level + 1;
         }
 
-        if (level >= CastleGameFlow.TotalStoryLevels)
+        if (level >= GameFlow.TotalStoryLevels)
         {
             IsStoryCompleted = true;
             IsFreeModeUnlocked = true;

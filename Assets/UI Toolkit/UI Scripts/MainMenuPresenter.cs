@@ -20,7 +20,7 @@ public class MainMenuPresenter
         settingsButton = root.Q<Button>("SettingsButton");
         quitButton = root.Q<Button>("QuitButton");
 
-        freeModeButton.SetEnabled(CastleSaveManager.IsFreeModeUnlocked);
+        freeModeButton.SetEnabled(SaveManager.IsFreeModeUnlocked);
         quitButton.clicked += Application.Quit;
     }
 }

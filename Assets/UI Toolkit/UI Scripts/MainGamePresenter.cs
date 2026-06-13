@@ -28,19 +28,19 @@ public class MainGamePresenter : MonoBehaviour
 
     private IEnumerator BindLevelManagerWhenReady()
     {
-        while (CastleLevelManager.Instance == null)
+        while (LevelManager.Instance == null)
         {
             yield return null;
         }
 
-        CastleLevelManager.Instance.LevelCompleted += HandleLevelCompleted;
+        LevelManager.Instance.LevelCompleted += HandleLevelCompleted;
     }
 
     private void OnDestroy()
     {
-        if (CastleLevelManager.Instance != null)
+        if (LevelManager.Instance != null)
         {
-            CastleLevelManager.Instance.LevelCompleted -= HandleLevelCompleted;
+            LevelManager.Instance.LevelCompleted -= HandleLevelCompleted;
         }
 
         Time.timeScale = 1f;
@@ -75,9 +75,9 @@ public class MainGamePresenter : MonoBehaviour
         {
             var pauseMenuPresenter = new PauseMenuPresenter(pauseView);
             pauseMenuPresenter.ResumeGame = ResumeGame;
-            pauseMenuPresenter.RetryLevel = () => CastleGameFlow.ReloadCurrentLevel();
+            pauseMenuPresenter.RetryLevel = () => GameFlow.ReloadCurrentLevel();
             pauseMenuPresenter.OpenSettings = () => ShowView("Settings");
-            pauseMenuPresenter.QuitToMainMenu = () => CastleGameFlow.LoadMainMenu();
+            pauseMenuPresenter.QuitToMainMenu = () => GameFlow.LoadMainMenu();
         }
 
         if (views.TryGetValue("Settings", out VisualElement settingsView))
@@ -90,33 +90,33 @@ public class MainGamePresenter : MonoBehaviour
         {
             finishLevelPresenter = new FinishLevelPresenter(finishView);
             finishLevelPresenter.NextLevel = HandleNextLevel;
-            finishLevelPresenter.RetryLevel = () => CastleGameFlow.ReloadCurrentLevel();
-            finishLevelPresenter.ReturnToMainMenu = () => CastleGameFlow.LoadMainMenu();
+            finishLevelPresenter.RetryLevel = () => GameFlow.ReloadCurrentLevel();
+            finishLevelPresenter.ReturnToMainMenu = () => GameFlow.LoadMainMenu();
             finishLevelPresenter.Hide();
         }
     }
 
     private void UpdateHud()
     {
-        if (gamePresenter == null || CastleLevelManager.Instance == null || isPaused)
+        if (gamePresenter == null || LevelManager.Instance == null || isPaused)
         {
             return;
         }
 
         gamePresenter.UpdateHud(
-            CastleLevelManager.Instance.ElapsedTime,
-            CastleLevelManager.Instance.CollectedCount,
-            CastleLevelManager.Instance.RegisteredCollectibles);
+            LevelManager.Instance.ElapsedTime,
+            LevelManager.Instance.CollectedCount,
+            LevelManager.Instance.RegisteredCollectibles);
     }
 
     private void HandlePauseInput()
     {
-        if (CastleInputManager.Instance == null || CastleLevelManager.Instance == null || CastleLevelManager.Instance.IsCompleted)
+        if (InputManager.Instance == null || LevelManager.Instance == null || LevelManager.Instance.IsCompleted)
         {
             return;
         }
 
-        if (CastleInputManager.Instance.PlayerOne.PausePressed || CastleInputManager.Instance.PlayerTwo.PausePressed)
+        if (InputManager.Instance.PlayerOne.PausePressed || InputManager.Instance.PlayerTwo.PausePressed)
         {
             TogglePause();
         }
@@ -124,7 +124,7 @@ public class MainGamePresenter : MonoBehaviour
 
     private void TogglePause()
     {
-        if (CastleLevelManager.Instance != null && CastleLevelManager.Instance.IsCompleted)
+        if (LevelManager.Instance != null && LevelManager.Instance.IsCompleted)
         {
             return;
         }
@@ -136,18 +136,18 @@ public class MainGamePresenter : MonoBehaviour
         }
 
         isPaused = true;
-        CastleLevelManager.Instance?.SetPaused(true);
+        LevelManager.Instance?.SetPaused(true);
         ShowView("PauseScreen");
     }
 
     private void ResumeGame()
     {
         isPaused = false;
-        CastleLevelManager.Instance?.SetPaused(false);
+        LevelManager.Instance?.SetPaused(false);
         GoBack();
     }
 
-    private void HandleLevelCompleted(CastleLevelResults results)
+    private void HandleLevelCompleted(LevelResults results)
     {
         isPaused = true;
         finishLevelPresenter?.ShowResults(results);
@@ -181,14 +181,14 @@ public class MainGamePresenter : MonoBehaviour
 
     private void HandleNextLevel()
     {
-        int nextLevel = CastleGameFlow.SelectedLevel + 1;
-        if (nextLevel > CastleGameFlow.TotalStoryLevels)
+        int nextLevel = GameFlow.SelectedLevel + 1;
+        if (nextLevel > GameFlow.TotalStoryLevels)
         {
             return;
         }
 
-        CastleGameFlow.SelectedLevel = nextLevel;
-        CastleGameFlow.LoadSelectedLevel();
+        GameFlow.SelectedLevel = nextLevel;
+        GameFlow.LoadSelectedLevel();
     }
 
     public void GoBack()

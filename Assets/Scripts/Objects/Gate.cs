@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class CastleGate : MonoBehaviour
+public class Gate : MonoBehaviour
 {
     [SerializeField] private Color gateColor = new Color(0.45f, 0.32f, 0.22f, 1f);
 
@@ -14,7 +14,7 @@ public class CastleGate : MonoBehaviour
     private void Awake()
     {
         ApplyVisualDefaults();
-        CastleSpriteColliderUtility.FitBoxColliderToSprite(GetComponent<BoxCollider2D>(), GetComponent<SpriteRenderer>());
+        SpriteColliderUtility.FitBoxColliderToSprite(GetComponent<BoxCollider2D>(), GetComponent<SpriteRenderer>());
     }
 
     private void ApplyVisualDefaults()
