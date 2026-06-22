@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 3800493916990166844}
   - component: {fileID: 1352232791304872402}
   - component: {fileID: 8047408190814620514}
-  - component: {fileID: 7107086548851301944}
+  - component: {fileID: 3376890939676849880}
   - component: {fileID: 3608929629237488475}
   - component: {fileID: 1391894444207837203}
-  - component: {fileID: 6419429754846331508}
   m_Layer: 0
   m_Name: BlackPlayer
   m_TagString: Untagged
@@ -123,8 +122,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &7107086548851301944
-CapsuleCollider2D:
+--- !u!61 &3376890939676849880
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -157,9 +156,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.75, y: 0.95}
-  m_Direction: 0
+  m_Offset: {x: -0.032289684, y: -0.031005979}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.69108665, y: 0.9383588}
+  m_EdgeRadius: 0
 --- !u!95 &3608929629237488475
 Animator:
   serializedVersion: 7
@@ -196,7 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CastlePlayerMovement
   playerId: 1
   moveSpeed: 6
-  jumpForce: 9.5
+  jumpForce: 12
   jumpBufferTime: 0.12
   carryMoveSpeedMultiplier: 0.75
   carryJumpForceMultiplier: 0.85
@@ -205,18 +213,6 @@ MonoBehaviour:
   placeOffset: {x: 0.9, y: -0.35}
   groundLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   jumpClip: {fileID: 8300000, guid: 97e583423e0c641c4b413c6fe1a516e4, type: 3}
   jumpVolume: 0.85
---- !u!114 &6419429754846331508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4798202562844422799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e11d8b79c5b48c39f8bc50471a31a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CastlePlayerAudio

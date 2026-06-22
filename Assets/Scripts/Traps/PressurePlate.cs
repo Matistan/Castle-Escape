@@ -15,7 +15,6 @@ public class PressurePlate : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float activateVolume = 0.8f;
 
     private readonly HashSet<Collider2D> occupants = new HashSet<Collider2D>();
-    private Collider2D plateCollider;
     private SpriteRenderer spriteRenderer;
     private bool isPressed;
 
@@ -24,23 +23,12 @@ public class PressurePlate : MonoBehaviour
     private void Awake()
     {
         EnsureInitialized();
-        plateCollider.isTrigger = true;
-
-        if (plateCollider is BoxCollider2D boxCollider)
-        {
-            SpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
-        }
 
         ApplyState(false, playSound: false);
     }
 
     private void EnsureInitialized()
     {
-        if (plateCollider == null)
-        {
-            plateCollider = GetComponent<Collider2D>();
-        }
-
         if (spriteRenderer == null)
         {
             spriteRenderer = GetComponent<SpriteRenderer>();

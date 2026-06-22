@@ -68,8 +68,16 @@ public class StartMenuPresenter : MonoBehaviour
         {
             var storyModePresenter = new StoryModePresenter(storyModeView);
             storyModePresenter.OpenMainMenu = GoBack;
-            storyModePresenter.StartNewGame = GameFlow.StartStoryNewGame;
-            storyModePresenter.ContinueGame = GameFlow.ContinueStory;
+            storyModePresenter.StartNewGame = () =>
+            {
+                GameFlow.StartStoryNewGame();
+                ShowView("Multiplayer");
+            };
+            storyModePresenter.ContinueGame = () =>
+            {
+                GameFlow.ContinueStory();
+                ShowView("Multiplayer");
+            };
         }
 
         if (views.TryGetValue("Multiplayer", out VisualElement multiplayerView))

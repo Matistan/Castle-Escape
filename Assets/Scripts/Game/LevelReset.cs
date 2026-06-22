@@ -6,7 +6,11 @@ public static class LevelReset
     private static bool isResetting;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void ClearResetFlag()
+    private static void Initialize()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         isResetting = false;
     }

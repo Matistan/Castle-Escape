@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 2159059205698699195}
   - component: {fileID: 349028039244884264}
   - component: {fileID: 3328086448946681447}
-  - component: {fileID: 3483533141567835940}
+  - component: {fileID: 5457267747480490377}
   - component: {fileID: 6478457582242684588}
   - component: {fileID: 5561347978237660331}
-  - component: {fileID: 553931700229323866}
   m_Layer: 0
   m_Name: WhitePlayer
   m_TagString: Untagged
@@ -123,8 +122,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &3483533141567835940
-CapsuleCollider2D:
+--- !u!61 &5457267747480490377
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -157,9 +156,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.65, y: 0.8}
-  m_Direction: 0
+  m_Offset: {x: -0.031221405, y: -0.031526208}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.6877248, y: 0.9369476}
+  m_EdgeRadius: 0
 --- !u!95 &6478457582242684588
 Animator:
   serializedVersion: 7
@@ -205,18 +213,6 @@ MonoBehaviour:
   placeOffset: {x: 0.9, y: -0.35}
   groundLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   jumpClip: {fileID: 8300000, guid: 97e583423e0c641c4b413c6fe1a516e4, type: 3}
   jumpVolume: 0.85
---- !u!114 &553931700229323866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600403265791542608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e11d8b79c5b48c39f8bc50471a31a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CastlePlayerAudio

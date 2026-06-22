@@ -18,7 +18,6 @@ public class Lever : MonoBehaviour
     [SerializeField] private AudioClip activateClip;
     [SerializeField, Range(0f, 1f)] private float activateVolume = 0.8f;
 
-    private Collider2D leverCollider;
     private SpriteRenderer spriteRenderer;
     private Coroutine animationRoutine;
     private bool isOn;
@@ -28,14 +27,7 @@ public class Lever : MonoBehaviour
 
     private void Awake()
     {
-        leverCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        leverCollider.isTrigger = true;
-
-        if (leverCollider is BoxCollider2D boxCollider)
-        {
-            SpriteColliderUtility.FitBoxColliderToSprite(boxCollider, spriteRenderer);
-        }
 
         SetStateImmediate(startOn);
     }

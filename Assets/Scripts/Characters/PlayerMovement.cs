@@ -1,9 +1,8 @@
 using UnityEngine;
-
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerId playerId;
@@ -15,15 +14,19 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float pickupRadius = 0.9f;
     [SerializeField] private Vector2 carryOffset = new Vector2(0.55f, 0.55f);
     [SerializeField] private Vector2 placeOffset = new Vector2(0.9f, -0.35f);
-    [SerializeField] private LayerMask groundLayers = ~0;
+
+    [Header("Air Physics")]
+    [SerializeField] private float airAcceleration = 30f;
+    [SerializeField] private float airDrag = 15f;
 
     [Header("Audio")]
     [SerializeField] private AudioClip jumpClip;
     [SerializeField, Range(0f, 1f)] private float jumpVolume = 0.85f;
 
     private Rigidbody2D body;
-    private Collider2D bodyCollider;
+    private BoxCollider2D boxCollider2D;
     private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rigidBody2D;
     private Animator animator;
     private PlayerInputSnapshot input;
     private Box heldBox;
@@ -51,8 +54,9 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        bodyCollider = GetComponent<Collider2D>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rigidBody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
@@ -94,9 +98,29 @@ public class PlayerMovement : MonoBehaviour
         float effectiveJumpForce = heldBox != null ? jumpForce * carryJumpForceMultiplier : jumpForce;
 
         Vector2 velocity = body.linearVelocity;
-        velocity.x = input.Move.x * effectiveMoveSpeed;
 
         bool grounded = IsGrounded();
+
+        if (grounded)
+        {
+            velocity.x = input.Move.x * effectiveMoveSpeed;
+        }
+        else
+        {
+            float targetAirSpeed = input.Move.x * effectiveMoveSpeed;
+
+            if (input.Move.x != 0)
+            {
+                // Smoothly accelerate towards the direction we are pressing
+                velocity.x = Mathf.MoveTowards(velocity.x, targetAirSpeed, airAcceleration * Time.fixedDeltaTime);
+            }
+            else
+            {
+                // Smoothly slow down horizontal speed if no keys are pressed
+                velocity.x = Mathf.MoveTowards(velocity.x, 0f, airDrag * Time.fixedDeltaTime);
+            }
+        }
+
         if (jumpBufferTimer > 0f && grounded)
         {
             velocity.y = effectiveJumpForce;
@@ -112,7 +136,16 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return bodyCollider.IsTouchingLayers(groundLayers);
+        RaycastHit2D hit = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
+        if (hit.collider == null) return false;
+
+        float playerFeetY = boxCollider2D.bounds.min.y;
+        float platformSurfaceY = hit.point.y;
+        bool isStandingOnGround = playerFeetY - platformSurfaceY >= 0.01f;
+
+        bool isStationary = rigidBody2D.linearVelocityY <= 0.01f;
+
+        return isStationary && isStandingOnGround;
     }
 
     private void UpdateFacing(float moveX)

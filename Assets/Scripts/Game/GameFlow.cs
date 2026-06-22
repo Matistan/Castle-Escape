@@ -6,6 +6,11 @@ public enum GameMode
     Story,
     FreeMode
 }
+public enum StoryModeMode
+{
+    NewGame,
+    Continue
+}
 
 public static class GameFlow
 {
@@ -16,6 +21,7 @@ public static class GameFlow
     public const int TotalStoryLevels = 3;
 
     public static GameMode CurrentMode { get; set; } = GameMode.Story;
+    public static StoryModeMode CurrentStoryMode { get; set; } = StoryModeMode.NewGame;
     public static int SelectedLevel { get; set; } = 1;
 
     public static string GetLevelSceneName(int level)
@@ -27,6 +33,23 @@ public static class GameFlow
             3 => Level3Scene,
             _ => Level1Scene
         };
+    }
+
+    public static void ContinueStory()
+    {
+        CurrentMode = GameMode.Story;
+        CurrentStoryMode = StoryModeMode.Continue;
+        SelectedLevel = Mathf.Clamp(SaveManager.StoryProgressLevel, 1, TotalStoryLevels);
+        //LoadSelectedLevel();
+    }
+
+    public static void StartStoryNewGame()
+    {
+        CurrentMode = GameMode.Story;
+        CurrentStoryMode = StoryModeMode.NewGame;
+        SelectedLevel = 1;
+        SaveManager.ResetStoryProgress();
+        //LoadSelectedLevel();
     }
 
     public static void LoadMainMenu()
@@ -45,21 +68,6 @@ public static class GameFlow
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public static void StartStoryNewGame()
-    {
-        CurrentMode = GameMode.Story;
-        SelectedLevel = 1;
-        SaveManager.ResetStoryProgress();
-        LoadSelectedLevel();
-    }
-
-    public static void ContinueStory()
-    {
-        CurrentMode = GameMode.Story;
-        SelectedLevel = Mathf.Clamp(SaveManager.StoryProgressLevel, 1, TotalStoryLevels);
-        LoadSelectedLevel();
     }
 
     public static void StartFreeModeLevel(int level)
